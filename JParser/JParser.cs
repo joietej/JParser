@@ -1,14 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using JParser.Extensions;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace JParser
 {
     public class JParser
     {
-        public string Parse(string jsonData)
+        public async Task<string> ParseAsync(string jsonData)
         {
-            return jsonData;
+            var sortedJson = JsonDocument
+                .Parse(jsonData)
+                .Sort();
+
+            return await sortedJson.ToUtf8StringAsync();
         }
     }
 }
