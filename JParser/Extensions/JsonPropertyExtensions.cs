@@ -12,26 +12,24 @@ namespace JParser.Extensions
                          .EnumerateObject()
                          .First();
 
-        public static JsonProperty Sort(this JsonProperty jsonProperty)
+        public static JsonProperty Sort(this JsonProperty jsonProperty) => jsonProperty.Value.ValueKind switch
         {
-            return jsonProperty.Value.ValueKind switch
-            {
-                JsonValueKind.Object => jsonProperty.Value.EnumerateObject()
-                                                          .Select(value => value.Sort())
-                                                          .OrderBy(j => j.Value, JsonElementComparer.Instance)
-                                                          .ToList()
-                                                          .Join(jsonProperty.Name),
+            JsonValueKind.Object => jsonProperty.Value.EnumerateObject()
+                                                      .Select(value => value.Sort())
+                                                      .OrderBy(j => j.Value, JsonElementComparer.Instance)
+                                                      .ToList()
+                                                      .Join(jsonProperty.Name),
 
-                JsonValueKind.Array => jsonProperty.Value.EnumerateArray()
-                                                          .Select(value => value.Sort())
-                                                          .ToList()
-                                                          .ToDocument(jsonProperty.Name, true)
-                                                          .RootElement
-                                                          .EnumerateObject()
-                                                          .First(),
-                _ => jsonProperty
-            };
-        }
+            JsonValueKind.Array => jsonProperty.Value.EnumerateArray()
+                                                      .Select(value => value.Sort())
+                                                      .ToList()
+                                                      .ToDocument(jsonProperty.Name, true)
+                                                      .RootElement
+                                                      .EnumerateObject()
+                                                      .First(),
+            _ => jsonProperty
+        };
+
         public static JsonDocument ToDocument(this IEnumerable<JsonProperty> jsonProperties, string propertyName = "")
         {
             using var output = new MemoryStream();

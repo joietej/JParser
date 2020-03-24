@@ -47,7 +47,7 @@ namespace JParser.Tests
 }";
 
             // Act
-            var actual = await new JParser().ParseAsync(input);
+            var actual = await JParser.ParseAndSortAsync(input);
 
             // Assert
             actual.Should().BeEquivalentTo(expected);

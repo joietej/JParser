@@ -11,9 +11,7 @@ namespace JParser
 
         public static JsonElementComparer Instance => instance.Value;
 
-        public int Compare(JsonElement x, JsonElement y)
-        {
-            return x.ValueKind == y.ValueKind
+        public int Compare(JsonElement x, JsonElement y) => x.ValueKind == y.ValueKind
                 ? 0
                 : (x.ValueKind, y.ValueKind) switch
                 {
@@ -30,6 +28,5 @@ namespace JParser
                     (JsonValueKind.Undefined, JsonValueKind.Array) => -1,
                     _ => 1
                 };
-        }
     }
 }

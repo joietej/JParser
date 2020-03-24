@@ -7,22 +7,21 @@ namespace JParser.Extensions
 {
     public static class JsonElementExtensions
     {
-        public static JsonElement Sort(this JsonElement jsonElement, string propertyName = "") =>
-            jsonElement.ValueKind switch
-            {
-                JsonValueKind.Object => jsonElement.EnumerateObject()
-                                                   .Select(j => j.Value.Sort(j.Name))
-                                                   .OrderBy(j => j, JsonElementComparer.Instance)
-                                                   .ToList()
-                                                   .ToDocument(propertyName).RootElement,
+        public static JsonElement Sort(this JsonElement jsonElement, string propertyName = "") => jsonElement.ValueKind switch
+        {
+            JsonValueKind.Object => jsonElement.EnumerateObject()
+                                               .Select(j => j.Value.Sort(j.Name))
+                                               .OrderBy(j => j, JsonElementComparer.Instance)
+                                               .ToList()
+                                               .ToDocument(propertyName).RootElement,
 
-                JsonValueKind.Array => jsonElement.EnumerateArray()
-                                                  .Select(value => value.Sort(propertyName))
-                                                  .OrderBy(j => j, JsonElementComparer.Instance)
-                                                  .ToList()
-                                                  .ToDocument(propertyName, true).RootElement,
-                _ => jsonElement
-            };
+            JsonValueKind.Array => jsonElement.EnumerateArray()
+                                              .Select(value => value.Sort(propertyName))
+                                              .OrderBy(j => j, JsonElementComparer.Instance)
+                                              .ToList()
+                                              .ToDocument(propertyName, true).RootElement,
+            _ => jsonElement
+        };
 
         public static JsonDocument ToDocument(this JsonElement jsonElement, string propertyName = "")
         {

@@ -4,15 +4,11 @@ using System.Threading.Tasks;
 
 namespace JParser
 {
-    public class JParser
+    public static class JParser
     {
-        public async Task<string> ParseAsync(string jsonData)
-        {
-            var sortedJson = JsonDocument
+        public static async Task<string> ParseAndSortAsync(string jsonData) => await JsonDocument
                 .Parse(jsonData)
-                .Sort();
-
-            return await sortedJson.ToUtf8StringAsync();
-        }
+                .Sort()
+                .ToUtf8StringAsync();
     }
 }
